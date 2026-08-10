@@ -1,0 +1,49 @@
+{
+  "app": {
+    "nome": "VITRUVIUS V2",
+    "versao": "2.0",
+    "descricao": "Automação de Revit 2026 via MCP + HTTP Bridge",
+    "idioma": "pt-BR"
+  },
+  "revit": {
+    "versao": 2026,
+    "edition": "Professional",
+    "addins_path": "C:\\ProgramData\\Autodesk\\Revit\\Addins\\2026"
+  },
+  "http": {
+    "porta": 48884,
+    "host": "127.0.0.1",
+    "timeout_ms": 30000,
+    "max_payload_kb": 10240
+  },
+  "mcp": {
+    "porta": "stdio",
+    "timeout_ms": 5000,
+    "max_tools": 100
+  },
+  "build": {
+    "config": "Release",
+    "output": "bin/Staging",
+    "target_framework": "net8.0-windows",
+    "nullable": true,
+    "language_version": "latest"
+  },
+  "logging": {
+    "nivel": "Information",
+    "arquivo": "logs/vitruvius.log",
+    "arquivo_http": "logs/http-bridge.log",
+    "arquivo_mcp": "logs/mcp-server.log",
+    "tamanho_max_mb": 50,
+    "backup_count": 5
+  },
+  "deploy": {
+    "auto_restart_revit": false,
+    "criar_backup_antes": true,
+    "validar_dll_assinatura": false
+  },
+  "development": {
+    "debug_mode": false,
+    "verbose_output": false,
+    "skip_testes_http": false
+  }
+}

@@ -1,0 +1,47 @@
+# Build outputs
+bin/
+obj/
+*.dll
+*.exe
+*.pdb
+*.exe.config
+
+# Visual Studio
+.vs/
+.vscode/
+*.csproj.user
+*.sln.DotSettings*
+
+# Local user-specific files
+appsettings.local.json
+settings.local.json
+
+# Logs
+logs/
+*.log
+
+# Temp files
+*.tmp
+*.temp
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+.env
+
+# IDE
+.idea/
+*.swp
+*.swo
+
+# Release builds (NUNCA usar, apenas Staging)
+bin/Release/
+
+# NuGet
+*.nupkg
+.nuget/
+
+# Build artifacts
+dist/
+publish/
