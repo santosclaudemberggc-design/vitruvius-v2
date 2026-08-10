@@ -1,10 +1,11 @@
 # Roadmap — VITRUVIUS V2
 ## Implementação Sequencial de Ferramentas Revit
 
-**Objetivo:** Implementar 30+ ferramentas de automação Revit  
-**Período:** Agosto — Novembro 2026  
-**Frequência:** Diária (1-2 ferramentas por dia)  
+**Objetivo:** Implementar 300+ ferramentas de automação Revit (de 631-826 potenciais)  
+**Período:** Agosto 2026 — Fevereiro 2028 (18 meses)  
+**Frequência:** Múltiplas ferramentas por dia (paralelização)  
 **Responsável:** Claudemberg + Claude  
+**Visão Completa:** Veja [ROADMAP_COMPLETO.md](ROADMAP_COMPLETO.md)  
 
 ---
 
