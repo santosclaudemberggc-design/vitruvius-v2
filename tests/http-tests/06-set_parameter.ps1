@@ -26,7 +26,7 @@ if ($valueType -eq "numero") {
     $value = $rawValue
 }
 
-$body = @{
+$bodyJson = @{
     action = "set_parameter"
     args = @{
         element_id = [int64]$elementId
@@ -34,16 +34,17 @@ $body = @{
         value = $value
     }
 } | ConvertTo-Json
+$bodyBytes = [System.Text.Encoding]::UTF8.GetBytes($bodyJson)
 
 Write-Host "`nEnviando requisição..." -ForegroundColor Cyan
-Write-Host "Body: $body`n"
+Write-Host "Body: $bodyJson`n"
 
 try {
     $response = Invoke-WebRequest `
         -Uri "http://localhost:48884/" `
         -Method Post `
-        -Body $body `
-        -ContentType "application/json" `
+        -Body $bodyBytes `
+        -ContentType "application/json; charset=utf-8" `
         -UseBasicParsing `
         -ErrorAction Stop
 
