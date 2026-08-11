@@ -1,172 +1,96 @@
 # Roadmap — VITRUVIUS V2
-## Implementação Sequencial de Ferramentas Revit
+## Implementação por Camadas de Dependência
 
-**Objetivo:** Implementar 300+ ferramentas de automação Revit (de 631-826 potenciais)  
-**Período:** Agosto 2026 — Fevereiro 2028 (18 meses)  
-**Frequência:** Múltiplas ferramentas por dia (paralelização)  
-**Responsável:** Claudemberg + Claude  
-**Visão Completa:** Veja [ROADMAP_COMPLETO.md](ROADMAP_COMPLETO.md)  
-
----
-
-## 📅 Semana 1 (08-14 de Agosto) — 30%
-**Meta:** 4 ferramentas + infraestrutura base
-
-| Dia | Ferramenta | Status | Prioridade | Tempo Est. |
-|-----|-----------|--------|-----------|-----------|
-| 08 (sex) | rotate_element | ✅ Concluído | 🔴 Crítica | 1h |
-| 09 (sab) | move_element | ⏳ Em fila | 🔴 Crítica | 1.5h |
-| 10 (dom) | scale_element | ⏳ Em fila | 🟡 Alta | 1.5h |
-| 11 (seg) | mirror_element | ⏳ Em fila | 🟡 Alta | 1.5h |
-
-**Checklist Semanal:**
-- [ ] Infraestrutura HTTP/MCP funcional
-- [ ] Padrão de desenvolvimento estabelecido
-- [ ] 4 ferramentas implementadas e testadas
-- [ ] MCP client pode chamar via Claude
+**Objetivo:** Implementar 300+ ferramentas de automação Revit (de 631-826 potenciais)
+**Período:** Agosto 2026 — Fevereiro 2028 (18 meses)
+**Frequência:** Múltiplas ferramentas por dia (paralelização)
+**Responsável:** Claudemberg + Claude
+**Visão Completa:** Veja [ROADMAP_COMPLETO.md](ROADMAP_COMPLETO.md)
 
 ---
 
-## 📅 Semana 2 (15-21 de Agosto) — 35%
-**Meta:** 5 ferramentas + módulo de família
+## 🧱 Estratégia: Primárias → Secundárias → Terciárias
 
-| Dia | Ferramenta | Status | Prioridade | Tempo Est. |
-|-----|-----------|--------|-----------|-----------|
-| 12 (ter) | load_family | ✅ Concluído | 🔴 Crítica | 0.5h |
-| 13 (qua) | unload_family | ⏳ Em fila | 🟡 Alta | 1h |
-| 14 (qui) | duplicate_family | ⏳ Em fila | 🟡 Alta | 1h |
-| 15 (sex) | rename_family | ⏳ Em fila | 🟢 Média | 1h |
-| 16 (sab) | set_parameter | ⏳ Em fila | 🔴 Crítica | 1.5h |
+Mudança de estratégia em 11/08: em vez de seguir só a ordem cronológica
+original, a fila passa a priorizar **ferramentas primitivas que as outras
+ferramentas usam por baixo dos panos**. Uma ferramenta primária bem feita
+destrava várias secundárias/terciárias de uma vez (ex.: `get_parameter` e
+`set_parameter` tornam `batch_set_parameters` e `select_by_parameter`
+triviais depois).
 
-**Checklist Semanal:**
-- [ ] Módulo Family 100% funcional
-- [ ] set_parameter testado com vários tipos
-- [ ] Documentação atualizada
-- [ ] 9 ferramentas ao total
+Camada de uma ferramenta = quantas outras ferramentas do roadmap dependem
+dela para funcionar:
+- **🟢 Primárias:** não dependem de nenhuma outra ferramenta da lista; são a
+  base (seleção, leitura/escrita de parâmetro, info do elemento, filtros).
+- **🟡 Secundárias:** usam 1+ primária como building block.
+- **🔴 Terciárias:** compõem várias primárias/secundárias em fluxos
+  específicos (criação de elementos, views, materiais).
+- **⚪ Módulos Avançados:** dependem de terciárias já estáveis (sheets,
+  links, annotations, batch em massa).
 
----
+### 🟢 Primárias
 
-## 📅 Semana 3 (22-28 de Agosto) — 40%
-**Meta:** 6 ferramentas + módulo de elementos
+| # | Ferramenta | Categoria | Status | Prioridade |
+|---|-----------|-----------|--------|-----------|
+| 1 | get_selection *(infra, fora das 30 originais)* | Seleção | ✅ Concluído e testado (11/08) | 🔴 Crítica |
+| 2 | get_parameter | Parâmetros | ✅ Concluído e testado (11/08) | 🔴 Crítica |
+| 3 | set_parameter | Parâmetros | ✅ Concluído e testado (11/08) | 🔴 Crítica |
+| 4 | get_element_info | Info | ⏳ Em fila | 🔴 Crítica |
+| 5 | select_by_category | Seleção | ⏳ Em fila | 🔴 Crítica |
+| 6 | select_by_type | Seleção | ⏳ Em fila | 🟡 Alta |
 
-| Dia | Ferramenta | Status | Prioridade | Tempo Est. |
-|-----|-----------|--------|-----------|-----------|
-| 17 (dom) | get_parameter | ⏳ Em fila | 🟡 Alta | 1h |
-| 18 (seg) | batch_set_parameters | ⏳ Em fila | 🟡 Alta | 1.5h |
-| 19 (ter) | create_wall | ⏳ Em fila | 🟡 Alta | 2h |
-| 20 (qua) | create_door | ⏳ Em fila | 🟡 Alta | 1.5h |
-| 21 (qui) | create_window | ⏳ Em fila | 🟡 Alta | 1.5h |
-| 22 (sex) | create_floor | ⏳ Em fila | 🟡 Alta | 1.5h |
+### 🟡 Secundárias (usam as primárias)
 
-**Checklist Semanal:**
-- [ ] Módulo Element Creation funcional
-- [ ] Parâmetros podem ser lidos/escritos
-- [ ] 15 ferramentas ao total
-- [ ] Performance monitorada (latência < 500ms)
+| # | Ferramenta | Depende de | Status | Prioridade |
+|---|-----------|-----------|--------|-----------|
+| 7 | move_element | get_selection (uso) | ✅ Concluído e testado (11/08) | 🔴 Crítica |
+| 8 | rotate_element | get_selection (uso) | ✅ Concluído e testado | 🔴 Crítica |
+| 9 | scale_element | get_selection (uso) | ⏳ Em fila | 🟡 Alta |
+| 10 | mirror_element | get_selection (uso) | ⏳ Em fila | 🟡 Alta |
+| 11 | batch_set_parameters | set_parameter | ⏳ Em fila | 🟡 Alta |
+| 12 | select_by_parameter | get_parameter | ⏳ Em fila | 🟡 Alta |
+| 13 | get_element_geometry | get_element_info | ⏳ Em fila | 🟡 Alta |
+| 14 | get_all_parameters | get_parameter | ⏳ Em fila | 🟡 Alta |
+| 15 | unload_family | load_family | ⏳ Em fila | 🟡 Alta |
+| 16 | duplicate_family | load_family | ⏳ Em fila | 🟡 Alta |
+| 17 | rename_family | load_family | ⏳ Em fila | 🟢 Média |
 
----
+### 🔴 Terciárias (compõem várias camadas anteriores)
 
-## 📅 Semana 4 (29/08 - 04/09) — 50%
-**Meta:** 7 ferramentas + módulo de seleção/filtro
+| # | Ferramenta | Depende de | Status | Prioridade |
+|---|-----------|-----------|--------|-----------|
+| 18 | create_wall | set_parameter | ⏳ Em fila | 🟡 Alta |
+| 19 | create_door | create_wall | ⏳ Em fila | 🟡 Alta |
+| 20 | create_window | create_wall | ⏳ Em fila | 🟡 Alta |
+| 21 | create_floor | set_parameter | ⏳ Em fila | 🟡 Alta |
+| 22 | create_roof | set_parameter | ⏳ Em fila | 🟡 Alta |
+| 23 | set_material | select_by_category, set_parameter | ⏳ Em fila | 🟢 Média |
+| 24 | set_fill_pattern | set_material | ⏳ Em fila | 🟢 Média |
+| 25 | set_line_weight | set_parameter | ⏳ Em fila | 🟢 Média |
+| 26 | set_color | set_material | ⏳ Em fila | 🟢 Média |
+| 27 | create_view | get_element_info | ⏳ Em fila | 🟢 Média |
+| 28 | set_view_range | create_view | ⏳ Em fila | 🟢 Média |
+| 29 | create_sheet | create_view | ⏳ Em fila | 🟢 Média |
+| 30 | add_view_to_sheet | create_sheet, create_view | ⏳ Em fila | ⚪ Baixa |
 
-| Dia | Ferramenta | Status | Prioridade | Tempo Est. |
-|-----|-----------|--------|-----------|-----------|
-| 23 (sab) | create_roof | ⏳ Em fila | 🟡 Alta | 1.5h |
-| 24 (dom) | select_by_type | ⏳ Em fila | 🟡 Alta | 1.5h |
-| 25 (seg) | select_by_category | ⏳ Em fila | 🟡 Alta | 1.5h |
-| 26 (ter) | select_by_parameter | ⏳ Em fila | 🟡 Alta | 1.5h |
-| 27 (qua) | get_element_info | ⏳ Em fila | 🟡 Alta | 1.5h |
-| 28 (qui) | get_element_geometry | ⏳ Em fila | 🟡 Alta | 2h |
-| 29 (sex) | get_all_parameters | ⏳ Em fila | 🟡 Alta | 1.5h |
+### ⚪ Módulos Avançados (dependem de terciárias estáveis)
 
-**Checklist Semanal:**
-- [ ] Módulo Selection/Filter funcional
-- [ ] Informações de elementos acessíveis
-- [ ] 22 ferramentas ao total
-- [ ] 50% do roadmap concluído
-
----
-
-## 📅 Semana 5+ (Setembro - Novembro) — 100%
-**Meta:** 8+ ferramentas + módulos avançados
-
-### Módulo Materials & Appearance (5 ferramentas)
-- set_material
-- set_fill_pattern
-- set_line_weight
-- set_color
-- apply_material_from_template
-
-### Módulo Views & Sheets (5 ferramentas)
-- create_view
-- set_view_range
-- create_sheet
-- add_view_to_sheet
-- set_view_properties
-
-### Módulo Links & Referências (3 ferramentas)
-- link_revit_file
-- unlink_revit_file
-- reload_linked_file
-
-### Módulo Annotations (4 ferramentas)
-- create_text_note
-- create_dimension
-- create_detail_line
-- create_detail_component
-
-### Módulo Batch Operations (3 ferramentas)
-- batch_delete_elements
-- batch_move_elements
-- batch_copy_elements
-
----
-
-## 🎯 Priorização Geral
-
-### 🔴 Crítica (15% - Dias 1-3)
-1. **rotate_element** — ✅ Base de transformação
-2. **move_element** — ✅ Precisa para qualquer posicionamento
-3. **load_family** — ✅ Necessário para importar elementos
-
-### 🟡 Alta (50% - Dias 4-14)
-4. **scale_element**
-5. **mirror_element**
-6. **set_parameter** — Base de modificação
-7. **get_parameter**
-8. **create_wall**
-9. **create_door**
-10. **create_window**
-11. **create_floor**
-12. **select_by_type**
-13. **select_by_category**
-14. **get_element_info**
-
-### 🟢 Média (25% - Dias 15-25)
-15. **unload_family**
-16. **duplicate_family**
-17. **batch_set_parameters**
-18. **select_by_parameter**
-19. **get_element_geometry**
-20. **get_all_parameters**
-21. **create_roof**
-22. **set_material**
-23. **create_view**
-
-### ⚪ Baixa (10% - Dias 26+)
-24-30+. Módulos avançados (sheets, links, annotations)
+- **Materiais extra:** apply_material_from_template
+- **Views & Sheets extra:** set_view_properties
+- **Links & Referências:** link_revit_file, unlink_revit_file, reload_linked_file
+- **Annotations:** create_text_note, create_dimension, create_detail_line, create_detail_component
+- **Batch em massa:** batch_delete_elements, batch_move_elements (usa move_element), batch_copy_elements
 
 ---
 
 ## 📊 Métricas de Sucesso
 
-| Métrica | Semana 1 | Semana 2 | Semana 3 | Semana 4 | Meta Final |
-|---------|----------|----------|----------|----------|-----------|
-| Ferramentas | 4 | 9 | 15 | 22 | 30+ |
-| % Roadmap | 13% | 30% | 50% | 73% | 100% |
-| Cobertura API | 4 módulos | 6 módulos | 8 módulos | 11 módulos | 15+ módulos |
-| Taxa Sucesso | 100% | 100% | 95%+ | 95%+ | 98%+ |
-| Latência Média | <500ms | <500ms | <500ms | <500ms | <500ms |
+| Métrica | Camada Primária | Camada Secundária | Camada Terciária | Meta Final |
+|---------|------------------|--------------------|--------------------|-----------|
+| Ferramentas | 6 | 11 | 13 | 30+ |
+| % Roadmap (das 30) | 20% | 57% | 100% | 100% |
+| Taxa Sucesso | 100% | 95%+ | 95%+ | 98%+ |
+| Latência Média | <500ms | <500ms | <500ms | <500ms |
 
 ---
 
@@ -176,6 +100,7 @@
 
 1. **Planejamento (15 min)**
    - Revisar spec da ferramenta
+   - Confirmar em qual camada ela está (primária/secundária/terciária) e quais dependências ela usa
    - Identificar API Revit necessária
    - Definir parâmetros JSON
 
@@ -210,11 +135,19 @@
 ## 📝 Notas de Implementação
 
 ### Dependências Entre Ferramentas
+Ver tabelas de camadas acima (coluna "Depende de"). Resumo:
 - `select_by_*` depende de estabilidade de `ElementFilter`
 - `batch_*` dependem de `move_element`, `set_parameter` estáveis
 - `create_*` (door/window) dependem de `create_wall` (paredes hospedam portas)
 
-### Testes Cruzados (após cada semana)
+### Ferramenta de Infraestrutura Adicionada (11/08)
+Fora das 30 planejadas, foi adicionada `get_selection` (ver docs/TOOLS.md):
+lê o elemento selecionado no Revit sem precisar copiar `element_id`
+manualmente. Passa a ser o primeiro passo padrão antes de qualquer
+ferramenta que exija `element_id`, quando o Claudemberg pedir para agir
+sobre "o que está selecionado".
+
+### Testes Cruzados (após cada camada)
 - [ ] Ferramenta A + Ferramenta B funcionam juntas?
 - [ ] Performance degradou com N ferramentas?
 - [ ] Documentação está completa?
@@ -223,15 +156,25 @@
 Se ferramenta falhar testes:
 1. Desativar case em `RevitCommandHandler.cs`
 2. Manter código em arquivo separado (`Commands/_Working/`)
-3. Retomar na próxima semana com tempo adicional
+3. Retomar depois com tempo adicional
 
 ---
 
 ## 🚀 Início Imediato
 
-**Próxima ferramenta a implementar:** `move_element`  
-**Data prevista:** 09 de Agosto (hoje/amanhã)  
-**Tempo estimado:** 1.5h  
+**Próxima ferramenta a implementar:** `get_element_info`
+**Prioridade:** 🔴 Crítica (última primária que falta antes de fechar a camada 🟢)
+**Tempo estimado:** 1.5h
+
+**Concluído em 11/08 (build + teste no Revit OK, mesclado em master):**
+- `move_element` — `Commands/MoveCommands.cs`
+- `get_selection` — `Commands/SelectionCommands.cs`
+- `get_parameter` / `set_parameter` — `Commands/ParameterCommands.cs`
+- Correções de infra no `HttpBridge.cs` (Content-Type, condição de corrida,
+  encoding UTF-8) que destravaram TODAS as ferramentas via HTTP.
+
+Com isso, a camada 🟢 Primárias está quase fechada — falta só
+`get_element_info` e `select_by_category`/`select_by_type`.
 
 **Checklist para começar:**
 - [ ] Revit 2026 aberto com documento ativo
@@ -241,6 +184,6 @@ Se ferramenta falhar testes:
 
 ---
 
-**Status:** 🟢 Pronto para início  
-**Última atualização:** 10/08/2026  
+**Status:** 🟢 Pronto para início
+**Última atualização:** 11/08/2026
 **Próxima revisão:** 14/08/2026
