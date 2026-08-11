@@ -85,12 +85,14 @@ public class HttpBridge
             }
 
             var response = Encoding.UTF8.GetBytes(_handler.Response);
+            ctx.Response.ContentType = "application/json; charset=utf-8";
             ctx.Response.ContentLength64 = response.Length;
             await ctx.Response.OutputStream.WriteAsync(response);
         }
         catch (Exception ex)
         {
             var err = Encoding.UTF8.GetBytes($"{{\"error\": \"{ex.Message}\"}}");
+            ctx.Response.ContentType = "application/json; charset=utf-8";
             ctx.Response.ContentLength64 = err.Length;
             await ctx.Response.OutputStream.WriteAsync(err);
         }
