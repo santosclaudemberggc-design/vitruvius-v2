@@ -1,4 +1,4 @@
-# Teste: set_parameter
+﻿# Teste: set_parameter
 # Descrição: Define o valor de um parâmetro de um elemento no Revit
 # Uso: Execute com Revit aberto em um projeto, com um elemento selecionado
 
@@ -44,6 +44,7 @@ try {
         -Method Post `
         -Body $body `
         -ContentType "application/json" `
+        -UseBasicParsing `
         -ErrorAction Stop
 
     $result = $response.Content | ConvertFrom-Json

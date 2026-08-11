@@ -1,4 +1,4 @@
-# Teste: get_selection
+﻿# Teste: get_selection
 # Descrição: Lê o(s) elemento(s) atualmente selecionado(s) no Revit
 # Uso: Selecione um ou mais elementos no Revit ANTES de rodar este script
 
@@ -26,6 +26,7 @@ try {
         -Method Post `
         -Body $body `
         -ContentType "application/json" `
+        -UseBasicParsing `
         -ErrorAction Stop
 
     $result = $response.Content | ConvertFrom-Json
