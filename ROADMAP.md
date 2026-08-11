@@ -176,6 +176,13 @@ Se ferramenta falhar testes:
 Com isso, a camada 🟢 Primárias está quase fechada — falta só
 `get_element_info` e `select_by_category`/`select_by_type`.
 
+**Infraestrutura MCP (branch `vitruvius/mcp-server`):** foi criado o
+servidor `src/VitruviusMcp/` — o "tradutor" que permite usar o VITRUVIUS
+conversando com o Claude local (Claude Desktop / Claude Code), sem rodar
+scripts. É a peça que transforma tudo em "só pedir". Pendente: build +
+conexão ao Claude na máquina do Claudemberg (ver `docs/MCP_SETUP.md`).
+Não tem dependências externas (compila só com o SDK do .NET 8).
+
 **Checklist para começar:**
 - [ ] Revit 2026 aberto com documento ativo
 - [ ] Projeto VITRUVIUS V2 aberto no VS Code/Visual Studio
