@@ -2,9 +2,9 @@
 # Descrição: Define o valor de um parâmetro de um elemento no Revit
 # Uso: Execute com Revit aberto em um projeto, com um elemento selecionado
 
-Write-Host "════════════════════════════════════════" -ForegroundColor Cyan
+Write-Host "========================================" -ForegroundColor Cyan
 Write-Host "Teste: set_parameter" -ForegroundColor Cyan
-Write-Host "════════════════════════════════════════" -ForegroundColor Cyan
+Write-Host "========================================" -ForegroundColor Cyan
 
 Write-Host "`nInstruções:" -ForegroundColor Yellow
 Write-Host "1. Abra o Revit com um projeto"
@@ -35,7 +35,7 @@ $body = @{
     }
 } | ConvertTo-Json
 
-Write-Host "`n📤 Enviando requisição..." -ForegroundColor Cyan
+Write-Host "`nEnviando requisição..." -ForegroundColor Cyan
 Write-Host "Body: $body`n"
 
 try {
@@ -49,15 +49,15 @@ try {
     $result = $response.Content | ConvertFrom-Json
 
     if ($result.ok) {
-        Write-Host "✅ SUCESSO!" -ForegroundColor Green
-        Write-Host "`n📋 Resposta:" -ForegroundColor Green
+        Write-Host "SUCESSO!" -ForegroundColor Green
+        Write-Host "`nResposta:" -ForegroundColor Green
         $result.result | ConvertTo-Json | Write-Host
     } else {
-        Write-Host "❌ ERRO!" -ForegroundColor Red
+        Write-Host "ERRO!" -ForegroundColor Red
         Write-Host "Mensagem: $($result.error)" -ForegroundColor Red
     }
 } catch {
-    Write-Host "❌ FALHA NA REQUISIÇÃO!" -ForegroundColor Red
+    Write-Host "FALHA NA REQUISIÇÃO!" -ForegroundColor Red
     Write-Host "Erro: $_" -ForegroundColor Red
 }
 

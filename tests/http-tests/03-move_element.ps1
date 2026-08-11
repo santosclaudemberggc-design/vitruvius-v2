@@ -2,9 +2,9 @@
 # Descrição: Move um elemento no Revit por um deslocamento (dx, dy, dz)
 # Uso: Execute com Revit aberto em um projeto, com um elemento selecionado
 
-Write-Host "════════════════════════════════════════" -ForegroundColor Cyan
+Write-Host "========================================" -ForegroundColor Cyan
 Write-Host "Teste: move_element" -ForegroundColor Cyan
-Write-Host "════════════════════════════════════════" -ForegroundColor Cyan
+Write-Host "========================================" -ForegroundColor Cyan
 
 # Solicitar input do usuário
 Write-Host "`nInstruções:" -ForegroundColor Yellow
@@ -34,7 +34,7 @@ $body = @{
     }
 } | ConvertTo-Json
 
-Write-Host "`n📤 Enviando requisição..." -ForegroundColor Cyan
+Write-Host "`nEnviando requisição..." -ForegroundColor Cyan
 Write-Host "Body: $body`n"
 
 # Enviar
@@ -49,21 +49,21 @@ try {
     $result = $response.Content | ConvertFrom-Json
 
     if ($result.ok) {
-        Write-Host "✅ SUCESSO!" -ForegroundColor Green
-        Write-Host "`n📋 Resposta:" -ForegroundColor Green
+        Write-Host "SUCESSO!" -ForegroundColor Green
+        Write-Host "`nResposta:" -ForegroundColor Green
         $result.result | ConvertTo-Json | Write-Host
 
-        Write-Host "`n✓ Elemento movido!"
+        Write-Host "`nElemento movido!"
         Write-Host "  ID: $($result.result.element_id)"
         Write-Host "  dx: $($result.result.dx)"
         Write-Host "  dy: $($result.result.dy)"
         Write-Host "  dz: $($result.result.dz)"
     } else {
-        Write-Host "❌ ERRO!" -ForegroundColor Red
+        Write-Host "ERRO!" -ForegroundColor Red
         Write-Host "Mensagem: $($result.error)" -ForegroundColor Red
     }
 } catch {
-    Write-Host "❌ FALHA NA REQUISIÇÃO!" -ForegroundColor Red
+    Write-Host "FALHA NA REQUISIÇÃO!" -ForegroundColor Red
     Write-Host "Erro: $_" -ForegroundColor Red
     Write-Host "`nVerifique:" -ForegroundColor Yellow
     Write-Host "  1. Revit está aberto?"
