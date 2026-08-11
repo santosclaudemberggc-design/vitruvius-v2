@@ -32,9 +32,9 @@ dela para funcionar:
 
 | # | Ferramenta | Categoria | Status | Prioridade |
 |---|-----------|-----------|--------|-----------|
-| 1 | get_selection *(infra, fora das 30 originais)* | Seleção | 🔶 Código pronto — build/teste pendentes | 🔴 Crítica |
-| 2 | get_parameter | Parâmetros | 🔶 Código pronto — build/teste pendentes | 🔴 Crítica |
-| 3 | set_parameter | Parâmetros | 🔶 Código pronto — build/teste pendentes | 🔴 Crítica |
+| 1 | get_selection *(infra, fora das 30 originais)* | Seleção | ✅ Concluído e testado (11/08) | 🔴 Crítica |
+| 2 | get_parameter | Parâmetros | ✅ Concluído e testado (11/08) | 🔴 Crítica |
+| 3 | set_parameter | Parâmetros | ✅ Concluído e testado (11/08) | 🔴 Crítica |
 | 4 | get_element_info | Info | ⏳ Em fila | 🔴 Crítica |
 | 5 | select_by_category | Seleção | ⏳ Em fila | 🔴 Crítica |
 | 6 | select_by_type | Seleção | ⏳ Em fila | 🟡 Alta |
@@ -43,7 +43,7 @@ dela para funcionar:
 
 | # | Ferramenta | Depende de | Status | Prioridade |
 |---|-----------|-----------|--------|-----------|
-| 7 | move_element | get_selection (uso) | 🔶 Código pronto — build/teste pendentes | 🔴 Crítica |
+| 7 | move_element | get_selection (uso) | ✅ Concluído e testado (11/08) | 🔴 Crítica |
 | 8 | rotate_element | get_selection (uso) | ✅ Concluído e testado | 🔴 Crítica |
 | 9 | scale_element | get_selection (uso) | ⏳ Em fila | 🟡 Alta |
 | 10 | mirror_element | get_selection (uso) | ⏳ Em fila | 🟡 Alta |
@@ -166,15 +166,15 @@ Se ferramenta falhar testes:
 **Prioridade:** 🔴 Crítica (última primária que falta antes de fechar a camada 🟢)
 **Tempo estimado:** 1.5h
 
-**Pendências anteriores (código pronto, aguardando build/teste no Windows+Revit):**
+**Concluído em 11/08 (build + teste no Revit OK, mesclado em master):**
 - `move_element` — `Commands/MoveCommands.cs`
 - `get_selection` — `Commands/SelectionCommands.cs`
 - `get_parameter` / `set_parameter` — `Commands/ParameterCommands.cs`
+- Correções de infra no `HttpBridge.cs` (Content-Type, condição de corrida,
+  encoding UTF-8) que destravaram TODAS as ferramentas via HTTP.
 
-Tudo isso está na branch `vitruvius/move-element-20260811` (o `git push` para
-o GitHub está falhando com 403 — patches/bundles enviados por arquivo como
-alternativa). Rodar os passos de Build & Deploy e os testes HTTP/visuais no
-Revit antes de marcar qualquer um como ✅ Concluído.
+Com isso, a camada 🟢 Primárias está quase fechada — falta só
+`get_element_info` e `select_by_category`/`select_by_type`.
 
 **Checklist para começar:**
 - [ ] Revit 2026 aberto com documento ativo

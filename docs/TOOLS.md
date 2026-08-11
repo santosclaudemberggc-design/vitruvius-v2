@@ -1,10 +1,18 @@
 # Ferramentas Implementadas — VITRUVIUS V2
 
 ## Status Geral
-- **Ferramentas Implementadas e Testadas:** 2/30 (6.7%)
-- **Código Pronto (aguardando build/teste no Windows+Revit):** 4/30 — move_element, set_parameter, get_parameter + get_selection (infra, fora da lista de 30)
+- **Ferramentas Implementadas e Testadas no Revit:** 5/30 (16.7%) — load_family, rotate_element, move_element, get_parameter, set_parameter
+- **Infraestrutura testada (fora das 30):** get_selection
 - **Última Atualização:** 11/08/2026
 - **Próxima Ferramenta:** get_element_info (ver estratégia de camadas no ROADMAP.md — primárias antes de secundárias/terciárias)
+
+> **Correções de infra durante o teste de 11/08:** ao validar as ferramentas
+> no Revit, foram encontrados e corrigidos 3 bugs no `HttpBridge.cs` que
+> afetavam TODAS as ferramentas (inclusive load_family/rotate_element):
+> (1) resposta HTTP sem `Content-Type` — o PowerShell recebia o corpo como
+> bytes em vez de texto; (2) condição de corrida — a partir da 2ª chamada o
+> servidor devolvia a resposta da chamada anterior; (3) acentos corrompidos
+> no envio (scripts de teste passaram a mandar UTF-8 explícito).
 
 ---
 
@@ -113,7 +121,7 @@ Invoke-WebRequest -Uri "http://localhost:48884/" -Method Post -Body $body -Conte
 }
 ```
 
-**Status:** 🔶 Código implementado — build e teste no Revit pendentes (requer ambiente Windows)
+**Status:** ✅ Implementado e Testado no Revit (11/08/2026 — mudou vaga de estacionamento 5 pés em X, confirmado visualmente)
 **Data:** 11/08/2026
 **Prioridade:** 🔴 Crítica
 
@@ -155,7 +163,7 @@ Invoke-WebRequest -Uri "http://localhost:48884/" -Method Post -Body $body -Conte
 }
 ```
 
-**Status:** 🔶 Código implementado — build e teste no Revit pendentes (requer ambiente Windows)
+**Status:** ✅ Implementado e Testado no Revit (11/08/2026 — gravou "Testado pelo Vitruvius" no parâmetro Comentários, confirmado por leitura e no Properties)
 **Data:** 11/08/2026
 **Prioridade:** 🔴 Crítica (primária — base de modificação de elementos)
 
@@ -198,7 +206,7 @@ Invoke-WebRequest -Uri "http://localhost:48884/" -Method Post -Body $body -Conte
 }
 ```
 
-**Status:** 🔶 Código implementado — build e teste no Revit pendentes (requer ambiente Windows)
+**Status:** ✅ Implementado e Testado no Revit (11/08/2026 — leu o parâmetro Comentários da vaga de estacionamento)
 **Data:** 11/08/2026
 **Prioridade:** 🔴 Crítica (primária — base de leitura de elementos)
 
@@ -251,7 +259,7 @@ ferramenta desejada (ex.: `move_element`).
   exatamente 1 elemento selecionado (atalho); com 0 ou 2+ elementos, use a
   lista `elements`.
 
-**Status:** 🔶 Código implementado — build e teste no Revit pendentes (requer ambiente Windows)
+**Status:** ✅ Implementado e Testado no Revit (11/08/2026 — leu a vaga de estacionamento selecionada, ID 450002, sem cópia manual)
 **Data:** 11/08/2026
 **Prioridade:** 🔴 Crítica (infraestrutura — usada por todas as outras ferramentas)
 
@@ -292,14 +300,14 @@ Invoke-WebRequest -Uri "http://localhost:48884/" -Method Post -Body $body -Conte
 |----|-----------|-----------|-----------|--------|
 | 1 | load_family | Família | 🔴 Crítica | ✅ |
 | 2 | rotate_element | Transformação | 🔴 Crítica | ✅ |
-| 3 | move_element | Transformação | 🔴 Crítica | 🔶 |
+| 3 | move_element | Transformação | 🔴 Crítica | ✅ |
 | 4 | scale_element | Transformação | 🟡 Alta | ⏳ |
 | 5 | mirror_element | Transformação | 🟡 Alta | ⏳ |
 | 6 | unload_family | Família | 🟡 Alta | ⏳ |
 | 7 | duplicate_family | Família | 🟡 Alta | ⏳ |
 | 8 | rename_family | Família | 🟢 Média | ⏳ |
-| 9 | set_parameter | Parâmetros | 🔴 Crítica | 🔶 |
-| 10 | get_parameter | Parâmetros | 🔴 Crítica | 🔶 |
+| 9 | set_parameter | Parâmetros | 🔴 Crítica | ✅ |
+| 10 | get_parameter | Parâmetros | 🔴 Crítica | ✅ |
 | 11 | batch_set_parameters | Parâmetros | 🟡 Alta | ⏳ |
 | 12 | create_wall | Criação | 🟡 Alta | ⏳ |
 | 13 | create_door | Criação | 🟡 Alta | ⏳ |
