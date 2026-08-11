@@ -74,6 +74,7 @@ public class HttpBridge
             }
 
             _handler.Job = new() { Action = action, Args = argsElem };
+            _handler.Response = "{\"ok\":false,\"error\":\"Nenhuma ação\"}";
             _event.Raise();
 
             // Aguardar execução do handler (max 5 segundos)
