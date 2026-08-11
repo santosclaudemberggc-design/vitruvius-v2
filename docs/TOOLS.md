@@ -2,9 +2,9 @@
 
 ## Status Geral
 - **Ferramentas Implementadas e Testadas:** 2/30 (6.7%)
-- **Código Pronto (aguardando build/teste no Windows+Revit):** 2/30 — move_element, get_selection (infra, fora da lista de 30)
+- **Código Pronto (aguardando build/teste no Windows+Revit):** 4/30 — move_element, set_parameter, get_parameter + get_selection (infra, fora da lista de 30)
 - **Última Atualização:** 11/08/2026
-- **Próxima Ferramenta:** scale_element
+- **Próxima Ferramenta:** get_element_info (ver estratégia de camadas no ROADMAP.md — primárias antes de secundárias/terciárias)
 
 ---
 
@@ -134,6 +134,89 @@ Invoke-WebRequest -Uri "http://localhost:48884/" -Method Post -Body $body -Conte
 
 ---
 
+### 9. set_parameter
+
+**Descrição:** Define o valor de um parâmetro de um elemento Revit (por nome, via `LookupParameter`)
+
+**Parâmetros:**
+- `element_id` (long): ID do elemento Revit
+- `parameter_name` (string): Nome do parâmetro (como aparece no Properties)
+- `value` (number ou string): Novo valor — o tipo precisa bater com o `StorageType` do parâmetro (Double/Integer → número, String → texto, ElementId → número do ID)
+
+**Retorno:**
+```json
+{
+  "ok": true,
+  "result": {
+    "element_id": 123456,
+    "parameter_name": "Comments",
+    "status": "definido"
+  }
+}
+```
+
+**Status:** 🔶 Código implementado — build e teste no Revit pendentes (requer ambiente Windows)
+**Data:** 11/08/2026
+**Prioridade:** 🔴 Crítica (primária — base de modificação de elementos)
+
+**Teste HTTP:**
+```powershell
+$body = @{
+    action = "set_parameter"
+    args = @{
+        element_id = 123456
+        parameter_name = "Comments"
+        value = "Testado pelo Vitruvius"
+    }
+} | ConvertTo-Json
+
+Invoke-WebRequest -Uri "http://localhost:48884/" -Method Post -Body $body -ContentType "application/json"
+```
+
+---
+
+### 10. get_parameter
+
+**Descrição:** Lê o valor de um parâmetro de um elemento Revit (por nome, via `LookupParameter`)
+
+**Parâmetros:**
+- `element_id` (long): ID do elemento Revit
+- `parameter_name` (string): Nome do parâmetro (como aparece no Properties)
+
+**Retorno:**
+```json
+{
+  "ok": true,
+  "result": {
+    "element_id": 123456,
+    "parameter_name": "Comments",
+    "value": "Testado pelo Vitruvius",
+    "value_string": "Testado pelo Vitruvius",
+    "storage_type": "String",
+    "is_read_only": false
+  }
+}
+```
+
+**Status:** 🔶 Código implementado — build e teste no Revit pendentes (requer ambiente Windows)
+**Data:** 11/08/2026
+**Prioridade:** 🔴 Crítica (primária — base de leitura de elementos)
+
+**Teste HTTP:**
+```powershell
+$body = @{
+    action = "get_parameter"
+    args = @{
+        element_id = 123456
+        parameter_name = "Comments"
+    }
+} | ConvertTo-Json
+
+Invoke-WebRequest -Uri "http://localhost:48884/" -Method Post -Body $body -ContentType "application/json"
+```
+
+---
+
 ## 🛠️ Ferramentas de Infraestrutura (fora da lista original de 30)
 
 Ferramentas de apoio que não fazem parte das 30 planejadas no ROADMAP.md,
@@ -182,13 +265,22 @@ Invoke-WebRequest -Uri "http://localhost:48884/" -Method Post -Body $body -Conte
 
 ## ⏳ Próximas Ferramentas (Fila)
 
+> A partir de 11/08, a ordem segue a estratégia de camadas do ROADMAP.md
+> (primárias → secundárias → terciárias), não mais a data original.
+
+### get_element_info *(próxima — fecha a camada 🟢 Primárias)*
+- **Prioridade:** 🔴 Crítica
+- **Descrição:** Retorna nome, categoria, tipo e outras infos básicas de um elemento
+
+### select_by_category
+- **Prioridade:** 🔴 Crítica
+- **Descrição:** Retorna todos os elementos de uma categoria (ex: todas as paredes)
+
 ### 4. scale_element
-- **Data Planejada:** 10/08/2026
 - **Prioridade:** 🟡 Alta
 - **Descrição:** Escala um elemento Revit (aumenta/diminui tamanho)
 
 ### 5. mirror_element
-- **Data Planejada:** 11/08/2026
 - **Prioridade:** 🟡 Alta
 - **Descrição:** Espelha um elemento em relação a um plano
 
@@ -206,8 +298,8 @@ Invoke-WebRequest -Uri "http://localhost:48884/" -Method Post -Body $body -Conte
 | 6 | unload_family | Família | 🟡 Alta | ⏳ |
 | 7 | duplicate_family | Família | 🟡 Alta | ⏳ |
 | 8 | rename_family | Família | 🟢 Média | ⏳ |
-| 9 | set_parameter | Parâmetros | 🔴 Crítica | ⏳ |
-| 10 | get_parameter | Parâmetros | 🟡 Alta | ⏳ |
+| 9 | set_parameter | Parâmetros | 🔴 Crítica | 🔶 |
+| 10 | get_parameter | Parâmetros | 🔴 Crítica | 🔶 |
 | 11 | batch_set_parameters | Parâmetros | 🟡 Alta | ⏳ |
 | 12 | create_wall | Criação | 🟡 Alta | ⏳ |
 | 13 | create_door | Criação | 🟡 Alta | ⏳ |
@@ -242,6 +334,8 @@ cd D:\011_VITRUVIUS_V2
 .\tests\http-tests\02-rotate_element.ps1
 .\tests\http-tests\03-move_element.ps1
 .\tests\http-tests\04-get_selection.ps1
+.\tests\http-tests\05-get_parameter.ps1
+.\tests\http-tests\06-set_parameter.ps1
 ```
 
 ### Teste MCP (Claude)
@@ -250,6 +344,8 @@ tools.load_family(family_path="C:\\...\\file.rfa")
 tools.rotate_element(element_id=123456, angle_degrees=45)
 tools.move_element(element_id=123456, dx=5.0)
 tools.get_selection()
+tools.get_parameter(element_id=123456, parameter_name="Comments")
+tools.set_parameter(element_id=123456, parameter_name="Comments", value="ok")
 ```
 
 ---
