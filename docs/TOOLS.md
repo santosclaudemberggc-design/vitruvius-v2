@@ -1,9 +1,10 @@
 # Ferramentas Implementadas — VITRUVIUS V2
 
 ## Status Geral
-- **Ferramentas Implementadas:** 2/30 (6.7%)
-- **Última Atualização:** 10/08/2026
-- **Próxima Ferramenta:** move_element
+- **Ferramentas Implementadas e Testadas:** 2/30 (6.7%)
+- **Código Pronto (aguardando build/teste no Windows+Revit):** 1/30 — move_element
+- **Última Atualização:** 11/08/2026
+- **Próxima Ferramenta:** scale_element
 
 ---
 
@@ -88,12 +89,52 @@ Invoke-WebRequest -Uri "http://localhost:48884/" -Method Post -Body $body -Conte
 
 ---
 
-## ⏳ Próximas Ferramentas (Fila)
-
 ### 3. move_element
-- **Data Planejada:** 09/08/2026
-- **Prioridade:** 🔴 Crítica
-- **Descrição:** Move um elemento Revit para novas coordenadas (X, Y, Z)
+
+**Descrição:** Move um elemento Revit por um deslocamento (dx, dy, dz) em pés
+
+**Parâmetros:**
+- `element_id` (long): ID do elemento Revit
+- `dx` (double, optional): Deslocamento em X, em pés (padrão: 0)
+- `dy` (double, optional): Deslocamento em Y, em pés (padrão: 0)
+- `dz` (double, optional): Deslocamento em Z, em pés (padrão: 0)
+
+**Retorno:**
+```json
+{
+  "ok": true,
+  "result": {
+    "element_id": 123456,
+    "dx": 5.0,
+    "dy": 0,
+    "dz": 0,
+    "status": "movido"
+  }
+}
+```
+
+**Status:** 🔶 Código implementado — build e teste no Revit pendentes (requer ambiente Windows)
+**Data:** 11/08/2026
+**Prioridade:** 🔴 Crítica
+
+**Teste HTTP:**
+```powershell
+$body = @{
+    action = "move_element"
+    args = @{
+        element_id = 123456
+        dx = 5.0
+        dy = 0
+        dz = 0
+    }
+} | ConvertTo-Json
+
+Invoke-WebRequest -Uri "http://localhost:48884/" -Method Post -Body $body -ContentType "application/json"
+```
+
+---
+
+## ⏳ Próximas Ferramentas (Fila)
 
 ### 4. scale_element
 - **Data Planejada:** 10/08/2026
@@ -113,7 +154,7 @@ Invoke-WebRequest -Uri "http://localhost:48884/" -Method Post -Body $body -Conte
 |----|-----------|-----------|-----------|--------|
 | 1 | load_family | Família | 🔴 Crítica | ✅ |
 | 2 | rotate_element | Transformação | 🔴 Crítica | ✅ |
-| 3 | move_element | Transformação | 🔴 Crítica | ⏳ |
+| 3 | move_element | Transformação | 🔴 Crítica | 🔶 |
 | 4 | scale_element | Transformação | 🟡 Alta | ⏳ |
 | 5 | mirror_element | Transformação | 🟡 Alta | ⏳ |
 | 6 | unload_family | Família | 🟡 Alta | ⏳ |
@@ -153,12 +194,14 @@ cd D:\011_VITRUVIUS_V2
 # Revit deve estar aberto com documento ativo
 .\tests\http-tests\01-load_family.ps1
 .\tests\http-tests\02-rotate_element.ps1
+.\tests\http-tests\03-move_element.ps1
 ```
 
 ### Teste MCP (Claude)
 ```
 tools.load_family(family_path="C:\\...\\file.rfa")
 tools.rotate_element(element_id=123456, angle_degrees=45)
+tools.move_element(element_id=123456, dx=5.0)
 ```
 
 ---
@@ -188,6 +231,6 @@ Todas as ferramentas retornam JSON no formato:
 
 ---
 
-**Última revisão:** 10/08/2026  
+**Última revisão:** 11/08/2026  
 **Responsável:** Claudemberg + Claude  
 **Próxima atualização:** Diária (conforme implementação de ferramentas)

@@ -15,7 +15,7 @@
 | Dia | Ferramenta | Status | Prioridade | Tempo Est. |
 |-----|-----------|--------|-----------|-----------|
 | 08 (sex) | rotate_element | ✅ Concluído | 🔴 Crítica | 1h |
-| 09 (sab) | move_element | ⏳ Em fila | 🔴 Crítica | 1.5h |
+| 09 (sab) | move_element | 🔶 Código pronto — build/teste pendentes (Windows+Revit) | 🔴 Crítica | 1.5h |
 | 10 (dom) | scale_element | ⏳ Em fila | 🟡 Alta | 1.5h |
 | 11 (seg) | mirror_element | ⏳ Em fila | 🟡 Alta | 1.5h |
 
@@ -229,9 +229,16 @@ Se ferramenta falhar testes:
 
 ## 🚀 Início Imediato
 
-**Próxima ferramenta a implementar:** `move_element`  
-**Data prevista:** 09 de Agosto (hoje/amanhã)  
+**Próxima ferramenta a implementar:** `scale_element`  
+**Data prevista:** 12 de Agosto (amanhã)  
 **Tempo estimado:** 1.5h  
+
+**Pendência anterior:** `move_element` teve o código implementado em
+`Commands/MoveCommands.cs` (branch `vitruvius/move-element-20260811`), mas o
+build (`dotnet build`) e o teste no Revit ainda não foram executados — isso
+exige uma máquina Windows com Revit 2026 instalado, o que não está disponível
+no ambiente que gerou esta rotina automática. Rodar os passos de Build &
+Deploy e o teste HTTP/visual antes de marcar como ✅ Concluído.
 
 **Checklist para começar:**
 - [ ] Revit 2026 aberto com documento ativo
@@ -242,5 +249,5 @@ Se ferramenta falhar testes:
 ---
 
 **Status:** 🟢 Pronto para início  
-**Última atualização:** 10/08/2026  
+**Última atualização:** 11/08/2026  
 **Próxima revisão:** 14/08/2026
