@@ -2,7 +2,7 @@
 
 ## Status Geral
 - **Ferramentas Implementadas e Testadas:** 2/30 (6.7%)
-- **Código Pronto (aguardando build/teste no Windows+Revit):** 1/30 — move_element
+- **Código Pronto (aguardando build/teste no Windows+Revit):** 2/30 — move_element, get_selection (infra, fora da lista de 30)
 - **Última Atualização:** 11/08/2026
 - **Próxima Ferramenta:** scale_element
 
@@ -134,6 +134,52 @@ Invoke-WebRequest -Uri "http://localhost:48884/" -Method Post -Body $body -Conte
 
 ---
 
+## 🛠️ Ferramentas de Infraestrutura (fora da lista original de 30)
+
+Ferramentas de apoio que não fazem parte das 30 planejadas no ROADMAP.md,
+mas que reduzem atrito no uso das demais (ex.: evitar copiar `element_id`
+manualmente do painel Properties).
+
+### get_selection
+
+**Descrição:** Retorna o(s) elemento(s) atualmente selecionado(s) no Revit,
+sem precisar informar `element_id`. Fluxo pretendido: você seleciona o
+elemento no Revit, pede pra executar uma ferramenta, e o Claude chama
+`get_selection` primeiro para descobrir o(s) ID(s) antes de chamar a
+ferramenta desejada (ex.: `move_element`).
+
+**Parâmetros:** nenhum
+
+**Retorno:**
+```json
+{
+  "ok": true,
+  "result": {
+    "count": 1,
+    "elements": [
+      { "element_id": 123456, "name": "Parede básica", "category": "Paredes" }
+    ],
+    "element_id": 123456,
+    "status": "sucesso"
+  }
+}
+```
+- `element_id` no nível raiz do `result` só vem preenchido quando há
+  exatamente 1 elemento selecionado (atalho); com 0 ou 2+ elementos, use a
+  lista `elements`.
+
+**Status:** 🔶 Código implementado — build e teste no Revit pendentes (requer ambiente Windows)
+**Data:** 11/08/2026
+**Prioridade:** 🔴 Crítica (infraestrutura — usada por todas as outras ferramentas)
+
+**Teste HTTP:**
+```powershell
+$body = @{ action = "get_selection"; args = @{} } | ConvertTo-Json
+Invoke-WebRequest -Uri "http://localhost:48884/" -Method Post -Body $body -ContentType "application/json"
+```
+
+---
+
 ## ⏳ Próximas Ferramentas (Fila)
 
 ### 4. scale_element
@@ -195,6 +241,7 @@ cd D:\011_VITRUVIUS_V2
 .\tests\http-tests\01-load_family.ps1
 .\tests\http-tests\02-rotate_element.ps1
 .\tests\http-tests\03-move_element.ps1
+.\tests\http-tests\04-get_selection.ps1
 ```
 
 ### Teste MCP (Claude)
@@ -202,6 +249,7 @@ cd D:\011_VITRUVIUS_V2
 tools.load_family(family_path="C:\\...\\file.rfa")
 tools.rotate_element(element_id=123456, angle_degrees=45)
 tools.move_element(element_id=123456, dx=5.0)
+tools.get_selection()
 ```
 
 ---

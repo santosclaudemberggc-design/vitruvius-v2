@@ -33,6 +33,7 @@ public class RevitCommandHandler : IExternalEventHandler
                 "load_family" => FamilyCommands.LoadFamily(doc, Job.Args),
                 "rotate_element" => RotateCommands.RotateElement(doc, Job.Args),
                 "move_element" => MoveCommands.MoveElement(doc, Job.Args),
+                "get_selection" => SelectionCommands.GetSelection(app.ActiveUIDocument, Job.Args),
                 _ => JsonResult(false, $"Ação desconhecida: '{Job.Action}'")
             };
         }

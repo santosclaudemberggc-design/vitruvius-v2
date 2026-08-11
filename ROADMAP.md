@@ -214,6 +214,13 @@
 - `batch_*` dependem de `move_element`, `set_parameter` estáveis
 - `create_*` (door/window) dependem de `create_wall` (paredes hospedam portas)
 
+### Ferramenta de Infraestrutura Adicionada (11/08)
+Fora das 30 planejadas, foi adicionada `get_selection` (ver docs/TOOLS.md):
+lê o elemento selecionado no Revit sem precisar copiar `element_id`
+manualmente. Passa a ser o primeiro passo padrão antes de qualquer
+ferramenta que exija `element_id`, quando o Claudemberg pedir para agir
+sobre "o que está selecionado".
+
 ### Testes Cruzados (após cada semana)
 - [ ] Ferramenta A + Ferramenta B funcionam juntas?
 - [ ] Performance degradou com N ferramentas?
