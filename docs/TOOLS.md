@@ -346,14 +346,19 @@ cd D:\011_VITRUVIUS_V2
 .\tests\http-tests\06-set_parameter.ps1
 ```
 
-### Teste MCP (Claude)
-```
-tools.load_family(family_path="C:\\...\\file.rfa")
-tools.rotate_element(element_id=123456, angle_degrees=45)
-tools.move_element(element_id=123456, dx=5.0)
-tools.get_selection()
-tools.get_parameter(element_id=123456, parameter_name="Comments")
-tools.set_parameter(element_id=123456, parameter_name="Comments", value="ok")
+### Via MCP (conversando com o Claude local)
+
+O servidor `src/VitruviusMcp/` expõe estas ferramentas para o Claude rodando
+no seu PC — aí basta pedir em português (ex.: "move a peça selecionada 5 pés
+em X") que o Claude chama `get_selection` + `move_element` sozinho, sem
+PowerShell. Veja o passo a passo em **[docs/MCP_SETUP.md](MCP_SETUP.md)**.
+
+Teste de fumaça do servidor MCP (não precisa do Revit):
+```powershell
+cd D:\011_VITRUVIUS_V2\src\VitruviusMcp
+dotnet build -c Release
+cd D:\011_VITRUVIUS_V2
+.\tests\mcp-tests\00-smoke.ps1
 ```
 
 ---
