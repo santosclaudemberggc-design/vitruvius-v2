@@ -1,10 +1,10 @@
 # Ferramentas Implementadas — VITRUVIUS V2
 
 ## Status Geral
-- **Ferramentas Implementadas e Testadas no Revit:** 5/30 (16.7%) — load_family, rotate_element, move_element, get_parameter, set_parameter
+- **Ferramentas Implementadas:** 6/30 (20%) — load_family, rotate_element, move_element, get_element_info, get_parameter, set_parameter
 - **Infraestrutura testada (fora das 30):** get_selection
-- **Última Atualização:** 11/08/2026
-- **Próxima Ferramenta:** get_element_info (ver estratégia de camadas no ROADMAP.md — primárias antes de secundárias/terciárias)
+- **Última Atualização:** 12/08/2026
+- **Próxima Ferramenta:** select_by_category (estratégia de camadas no ROADMAP.md — primárias antes de secundárias/terciárias)
 
 > **Correções de infra durante o teste de 11/08:** ao validar as ferramentas
 > no Revit, foram encontrados e corrigidos 3 bugs no `HttpBridge.cs` que
@@ -271,18 +271,66 @@ Invoke-WebRequest -Uri "http://localhost:48884/" -Method Post -Body $body -Conte
 
 ---
 
+### 11. get_element_info
+
+**Descrição:** Retorna informações detalhadas de um elemento Revit (nome, categoria, tipo, localização, nível, material, etc)
+
+**Parâmetros:**
+- `element_id` (long): ID do elemento Revit
+
+**Retorno:**
+```json
+{
+  "ok": true,
+  "result": {
+    "element_id": 450002,
+    "name": "Vaga 001",
+    "category": "Genéricos",
+    "element_type": "Genérico",
+    "family_name": null,
+    "host_id": null,
+    "is_instance": false,
+    "is_type": false,
+    "level": "Pavimento Térreo",
+    "location": {
+      "type": "Point",
+      "x": 100.5,
+      "y": 200.25,
+      "z": 0.0
+    },
+    "material_id": null,
+    "parameters_count": 42
+  }
+}
+```
+
+**Status:** ✅ Implementado (12/08/2026) — pronto para teste no Revit
+**Data:** 12/08/2026
+**Prioridade:** 🔴 Crítica (primária — fecha a camada 🟢)
+
+**Teste HTTP:**
+```powershell
+$body = @{
+    action = "get_element_info"
+    args = @{
+        element_id = 450002
+    }
+} | ConvertTo-Json
+
+Invoke-WebRequest -Uri "http://localhost:48884/" -Method Post -Body $body -ContentType "application/json"
+```
+
+---
+
 ## ⏳ Próximas Ferramentas (Fila)
 
 > A partir de 11/08, a ordem segue a estratégia de camadas do ROADMAP.md
 > (primárias → secundárias → terciárias), não mais a data original.
 
-### get_element_info *(próxima — fecha a camada 🟢 Primárias)*
-- **Prioridade:** 🔴 Crítica
-- **Descrição:** Retorna nome, categoria, tipo e outras infos básicas de um elemento
-
-### select_by_category
+### select_by_category *(próxima — fecha a camada 🟢 Primárias)*
 - **Prioridade:** 🔴 Crítica
 - **Descrição:** Retorna todos os elementos de uma categoria (ex: todas as paredes)
+- **Data Estimada:** 13/08/2026
 
 ### 4. scale_element
 - **Prioridade:** 🟡 Alta
@@ -317,7 +365,7 @@ Invoke-WebRequest -Uri "http://localhost:48884/" -Method Post -Body $body -Conte
 | 17 | select_by_type | Seleção | 🟡 Alta | ⏳ |
 | 18 | select_by_category | Seleção | 🟡 Alta | ⏳ |
 | 19 | select_by_parameter | Seleção | 🟡 Alta | ⏳ |
-| 20 | get_element_info | Info | 🟡 Alta | ⏳ |
+| 20 | get_element_info | Info | 🔴 Crítica | ✅ |
 | 21 | get_element_geometry | Info | 🟡 Alta | ⏳ |
 | 22 | get_all_parameters | Info | 🟡 Alta | ⏳ |
 | 23 | set_material | Materiais | 🟢 Média | ⏳ |

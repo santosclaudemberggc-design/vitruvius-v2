@@ -249,5 +249,19 @@ object[] BuildToolDefs() => new object[]
             },
             required = new[] { "family_path" }
         }
+    },
+    new
+    {
+        name = "get_element_info",
+        description = "Retorna informações detalhadas de um elemento: nome, categoria, tipo, localização, material, nível, etc.",
+        inputSchema = new
+        {
+            type = "object",
+            properties = new
+            {
+                element_id = new { type = "integer", description = "ID do elemento no Revit" }
+            },
+            required = new[] { "element_id" }
+        }
     }
 };
