@@ -1,10 +1,10 @@
 # Ferramentas Implementadas — VITRUVIUS V2
 
 ## Status Geral
-- **Ferramentas Implementadas:** 6/30 (20%) — load_family, rotate_element, move_element, get_element_info, get_parameter, set_parameter
+- **Ferramentas Implementadas:** 7/30 (23.3%) — load_family, rotate_element, move_element, get_element_info, get_parameter, set_parameter, select_by_category
 - **Infraestrutura testada (fora das 30):** get_selection
 - **Última Atualização:** 12/08/2026
-- **Próxima Ferramenta:** select_by_category (estratégia de camadas no ROADMAP.md — primárias antes de secundárias/terciárias)
+- **Próxima Ferramenta:** select_by_type (estratégia de camadas no ROADMAP.md — primárias antes de secundárias/terciárias)
 
 > **Correções de infra durante o teste de 11/08:** ao validar as ferramentas
 > no Revit, foram encontrados e corrigidos 3 bugs no `HttpBridge.cs` que
@@ -322,15 +322,51 @@ Invoke-WebRequest -Uri "http://localhost:48884/" -Method Post -Body $body -Conte
 
 ---
 
+### 12. select_by_category
+
+**Descrição:** Retorna todos os elementos de uma categoria específica (ex: todas as paredes, todas as portas, todos os móveis)
+
+**Parâmetros:**
+- `category_name` (string): Nome da categoria (ex: "Paredes", "Portas", "Mobiliário", "Colunas")
+
+**Retorno:**
+```json
+{
+  "ok": true,
+  "result": {
+    "count": 5,
+    "category": "Paredes",
+    "elements": [
+      { "element_id": 123456, "name": "Parede Externa 01", "category": "Paredes", "element_type": "Wall" },
+      { "element_id": 123457, "name": "Parede Interna 02", "category": "Paredes", "element_type": "Wall" }
+    ],
+    "status": "sucesso"
+  }
+}
+```
+
+**Status:** ✅ Implementado (12/08/2026) — pronto para teste no Revit  
+**Data:** 12/08/2026  
+**Prioridade:** 🔴 Crítica (primária — fecha a camada 🟢)
+
+**Teste HTTP:**
+```powershell
+.\tests\http-tests\08-select_by_category.ps1 "Paredes"
+.\tests\http-tests\08-select_by_category.ps1 "Mobiliário"
+.\tests\http-tests\08-select_by_category.ps1 "Portas"
+```
+
+---
+
 ## ⏳ Próximas Ferramentas (Fila)
 
 > A partir de 11/08, a ordem segue a estratégia de camadas do ROADMAP.md
 > (primárias → secundárias → terciárias), não mais a data original.
 
-### select_by_category *(próxima — fecha a camada 🟢 Primárias)*
-- **Prioridade:** 🔴 Crítica
-- **Descrição:** Retorna todos os elementos de uma categoria (ex: todas as paredes)
-- **Data Estimada:** 13/08/2026
+### select_by_type *(próxima — última primária)*
+- **Prioridade:** 🟡 Alta
+- **Descrição:** Retorna todos os elementos de um tipo específico (ex: todas as instâncias da família "Porta Dupla")
+- **Data Estimada:** 13-14/08/2026
 
 ### 4. scale_element
 - **Prioridade:** 🟡 Alta
@@ -363,7 +399,7 @@ Invoke-WebRequest -Uri "http://localhost:48884/" -Method Post -Body $body -Conte
 | 15 | create_floor | Criação | 🟡 Alta | ⏳ |
 | 16 | create_roof | Criação | 🟡 Alta | ⏳ |
 | 17 | select_by_type | Seleção | 🟡 Alta | ⏳ |
-| 18 | select_by_category | Seleção | 🟡 Alta | ⏳ |
+| 18 | select_by_category | Seleção | 🔴 Crítica | ✅ |
 | 19 | select_by_parameter | Seleção | 🟡 Alta | ⏳ |
 | 20 | get_element_info | Info | 🔴 Crítica | ✅ |
 | 21 | get_element_geometry | Info | 🟡 Alta | ⏳ |

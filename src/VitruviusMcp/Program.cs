@@ -263,5 +263,20 @@ object[] BuildToolDefs() => new object[]
             },
             required = new[] { "element_id" }
         }
+    },
+    new
+    {
+        name = "select_by_category",
+        description = "Retorna todos os elementos de uma categoria específica (ex: 'Paredes', 'Portas', 'Mobiliário', 'Colunas'). " +
+                      "Use isto para buscar todos os elementos de um tipo.",
+        inputSchema = new
+        {
+            type = "object",
+            properties = new
+            {
+                category_name = new { type = "string", description = "Nome da categoria (ex: 'Paredes', 'Portas', 'Mobiliário', 'Colunas')" }
+            },
+            required = new[] { "category_name" }
+        }
     }
 };

@@ -36,7 +36,7 @@ dela para funcionar:
 | 2 | get_parameter | Parâmetros | ✅ Concluído e testado (11/08) | 🔴 Crítica |
 | 3 | set_parameter | Parâmetros | ✅ Concluído e testado (11/08) | 🔴 Crítica |
 | 4 | get_element_info | Info | ✅ Concluído e testado (12/08) | 🔴 Crítica |
-| 5 | select_by_category | Seleção | ⏳ Em fila | 🔴 Crítica |
+| 5 | select_by_category | Seleção | ✅ Concluído (12/08) | 🔴 Crítica |
 | 6 | select_by_type | Seleção | ⏳ Em fila | 🟡 Alta |
 
 ### 🟡 Secundárias (usam as primárias)
@@ -162,12 +162,13 @@ Se ferramenta falhar testes:
 
 ## 🚀 Início Imediato
 
-**Próxima ferramenta a implementar:** `select_by_category`
-**Prioridade:** 🔴 Crítica (segunda e última primária que falta para fechar a camada 🟢)
+**Próxima ferramenta a implementar:** `select_by_type`
+**Prioridade:** 🟡 Alta (última primária que falta para fechar a camada 🟢)
 **Tempo estimado:** 1.5h
 
 **Concluído em 12/08:**
-- `get_element_info` — `Commands/InfoCommands.cs` (implementado, pronto para teste no Windows)
+- `select_by_category` — `Commands/SelectionCommands.cs` (implementado, pronto para teste no Windows)
+- `get_element_info` — `Commands/InfoCommands.cs` (implementado e testado via HTTP, confirmado com elemento 450425)
 
 **Concluído em 11/08 (build + teste no Revit OK, mesclado em master):**
 - `move_element` — `Commands/MoveCommands.cs`
@@ -194,6 +195,6 @@ Não tem dependências externas (compila só com o SDK do .NET 8).
 
 ---
 
-**Status:** 🟢 Pronto para início
-**Última atualização:** 12/08/2026
-**Próxima revisão:** 13/08/2026
+**Status:** 🟢 Camada primária 5/6 (83.3%) — falta apenas select_by_type
+**Última atualização:** 12/08/2026 (select_by_category implementado)
+**Próxima revisão:** 13/08/2026 (select_by_type)
