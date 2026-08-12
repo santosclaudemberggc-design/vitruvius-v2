@@ -1,14 +1,21 @@
 # VITRUVIUS V2 — Automação Revit via MCP
 
-**Objetivo:** Automatizar 60+ ferramentas do Revit 2026 via Claude usando MCP (Model Context Protocol) e HTTP bridge.
+**Objetivo:** Automatizar 300+ ferramentas do Revit 2026 via Claude usando MCP (Model Context Protocol) e HTTP bridge.
 
-## Status
+## Status Atual (12/08/2026)
 
+**Ferramentas Implementadas:** 6/30 (20%)
 - ✅ **load_family** — Carrega famílias .rfa
 - ✅ **rotate_element** — Rotaciona elementos
-- 🟡 **move_element** — Em implementação
-- 🟡 **scale_element** — Em implementação
-- 📋 **+30 ferramentas** — Roadmap em STRUCTURE.md
+- ✅ **move_element** — Move elementos (dx, dy, dz)
+- ✅ **get_parameter** — Lê parâmetros
+- ✅ **set_parameter** — Define parâmetros
+- ✅ **get_element_info** — Retorna informações do elemento (NEW 12/08)
+
+**Próximas (esta semana):**
+- ⏳ **select_by_category** — Seleciona por categoria
+- ⏳ **select_by_type** — Seleciona por tipo
+- 📋 **+190 ferramentas** — Roadmap em ROADMAP.md e ROADMAP_COMPLETO.md
 
 ## Arquitetura
 
@@ -58,21 +65,29 @@ Veja [STRUCTURE.md](STRUCTURE.md) para organização completa.
 - `tests/` — Testes
 - `config/` — Configurações e manifests
 
-## Desenvolvimento
+## Documentação
 
-Para adicionar nova ferramenta, veja [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md).
+- **[ROADMAP.md](ROADMAP.md)** — Estratégia de implementação por camadas (primárias → secundárias → terciárias)
+- **[ROADMAP_COMPLETO.md](ROADMAP_COMPLETO.md)** — Visão abrangente de todas as 30 categorias e 631-826 ferramentas potenciais
+- **[docs/TOOLS.md](docs/TOOLS.md)** — Ferramentas implementadas com exemplos HTTP
+- **[docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)** — Como adicionar nova ferramenta
+- **[docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md)** — Problemas comuns e soluções
 
-## Troubleshooting
+## Cronograma Realista (até Novembro)
 
-Erros? Veja [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md).
+### Fase 1: Fundação (Agosto-Setembro) — 50 ferramentas
+- **12/08:** 6 ferramentas ✅
+- **20/08:** +4 ferramentas (select_by_category/type) → 10 total
+- **31/08:** +10 ferramentas (transformações, delete, copy) → 20 total
+- **30/09:** +30 ferramentas (criação, batch, views) → 50 total
 
-## Timeline
+### Fase 2: Especialização (Setembro-Outubro) — +80 ferramentas (130 total)
+- **31/10:** Sistemas MEP (40-50) + Estrutural (20-25) + Arquitetura (20-30)
 
-- **Semana 1 (08-14/08):** 4 ferramentas → 30%
-- **Semana 2 (15-21/08):** 5 ferramentas → 35%
-- **Semana 3 (22-28/08):** 6 ferramentas → 40%
-- **Semana 4 (29/08-04/09):** 7 ferramentas → 50%
-- **Meta:** 60+ ferramentas até novembro 2026
+### Fase 3: Avançada (Novembro-Dezembro) — +80 ferramentas (210 total)
+- **30/11:** Geometria, Links, Integração Dynamo
+
+**Meta até Novembro:** 210 ferramentas (25-33% de cobertura, 95%+ dos workflows reais)
 
 ---
 
