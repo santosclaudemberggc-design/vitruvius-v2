@@ -55,23 +55,46 @@ claude mcp list
 
 ### B) Claude Desktop (aplicativo)
 
-1. Abra o arquivo de configuração (crie se não existir):
-   `%APPDATA%\Claude\claude_desktop_config.json`
-2. Coloque este conteúdo (ou adicione a entrada `vitruvius` dentro de
-   `mcpServers`, se já houver outras):
+Dentro do app: **Configurações → Desenvolvedor → "Servidores MCP locais"**.
+Adicione a entrada `vitruvius` dentro de `mcpServers`, apontando **direto para
+o `.exe`** (mais robusto — não depende do `dotnet` estar no PATH do app):
 
 ```json
 {
   "mcpServers": {
     "vitruvius": {
-      "command": "dotnet",
-      "args": ["D:\\011_VITRUVIUS_V2\\src\\VitruviusMcp\\bin\\Release\\net8.0\\VitruviusMcp.dll"]
+      "command": "D:\\011_VITRUVIUS_V2\\src\\VitruviusMcp\\bin\\Release\\net8.0\\VitruviusMcp.exe"
     }
   }
 }
 ```
-   (No JSON, as barras invertidas do caminho ficam duplas: `\\`.)
-3. **Feche e reabra o Claude Desktop** para ele carregar o servidor.
+(No JSON, as barras invertidas do caminho ficam duplas: `\\`.)
+
+Depois **feche o Claude Desktop de verdade** (ícone na bandeja do Windows →
+botão direito → **Sair**) e reabra. Confira em **Desenvolvedor** se o
+`vitruvius` está **running**.
+
+> ⚠️ **ATENÇÃO — onde fica o arquivo de config (pegadinha da Microsoft Store):**
+> Se você instalou o Claude Desktop pela **Microsoft Store**, o
+> `claude_desktop_config.json` **NÃO** fica em `%APPDATA%\Claude\`. Ele fica
+> numa pasta empacotada, tipo:
+> `C:\Users\<voce>\AppData\Local\Packages\Claude_<id>\LocalCache\Roaming\Claude\claude_desktop_config.json`
+>
+> Editar o arquivo da pasta normal **não terá efeito nenhum** — o app ignora.
+> Para achar o arquivo certo sem erro, use o botão **"Editar Config"** na tela
+> Desenvolvedor: ele revela o arquivo que o app realmente lê. Esse arquivo
+> costuma ter MUITA configuração sua (sessões, preferências) — **não apague
+> nada**; só adicione o `vitruvius` dentro do `mcpServers` (que pode estar
+> vazio, `"mcpServers": {}`).
+>
+> Comando PowerShell para inserir o `vitruvius` no arquivo certo sem tocar no
+> resto (funciona tanto para Store quanto instalação normal):
+> ```powershell
+> $real=(Get-ChildItem "$env:LOCALAPPDATA\Packages\Claude_*\LocalCache\Roaming\Claude\claude_desktop_config.json","$env:APPDATA\Claude\claude_desktop_config.json" -ErrorAction SilentlyContinue|Select-Object -First 1).FullName
+> $txt=Get-Content $real -Raw
+> $novo=$txt -replace '"mcpServers":\s*\{\s*\}','"mcpServers": { "vitruvius": { "command": "D:\\011_VITRUVIUS_V2\\src\\VitruviusMcp\\bin\\Release\\net8.0\\VitruviusMcp.exe" } }'
+> [System.IO.File]::WriteAllText($real,$novo,(New-Object System.Text.UTF8Encoding($false)))
+> ```
 
 ---
 
