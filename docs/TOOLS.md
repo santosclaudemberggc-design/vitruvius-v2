@@ -304,7 +304,7 @@ Invoke-WebRequest -Uri "http://localhost:48884/" -Method Post -Body $body -Conte
 }
 ```
 
-**Status:** ✅ Implementado (12/08/2026) — pronto para teste no Revit
+**Status:** ✅ Implementado e Testado no Revit (12/08/2026 — elemento Mobiliário "4 - Couch (53) (1)", ID 450425, confirmado visual)
 **Data:** 12/08/2026
 **Prioridade:** 🔴 Crítica (primária — fecha a camada 🟢)
 

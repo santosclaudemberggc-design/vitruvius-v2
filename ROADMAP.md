@@ -35,7 +35,7 @@ dela para funcionar:
 | 1 | get_selection *(infra, fora das 30 originais)* | Seleção | ✅ Concluído e testado (11/08) | 🔴 Crítica |
 | 2 | get_parameter | Parâmetros | ✅ Concluído e testado (11/08) | 🔴 Crítica |
 | 3 | set_parameter | Parâmetros | ✅ Concluído e testado (11/08) | 🔴 Crítica |
-| 4 | get_element_info | Info | ✅ Concluído (12/08) | 🔴 Crítica |
+| 4 | get_element_info | Info | ✅ Concluído e testado (12/08) | 🔴 Crítica |
 | 5 | select_by_category | Seleção | ⏳ Em fila | 🔴 Crítica |
 | 6 | select_by_type | Seleção | ⏳ Em fila | 🟡 Alta |
 
