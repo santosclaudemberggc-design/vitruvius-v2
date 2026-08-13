@@ -38,6 +38,7 @@ public class RevitCommandHandler : IExternalEventHandler
                 "set_parameter" => ParameterCommands.SetParameter(doc, Job.Args),
                 "get_element_info" => InfoCommands.GetElementInfo(doc, Job.Args),
                 "select_by_category" => SelectionCommands.SelectByCategory(doc, Job.Args),
+                "select_by_type" => SelectionCommands.SelectByType(doc, Job.Args),
                 _ => JsonResult(false, $"Ação desconhecida: '{Job.Action}'")
             };
         }

@@ -37,7 +37,7 @@ dela para funcionar:
 | 3 | set_parameter | Parâmetros | ✅ Concluído e testado (11/08) | 🔴 Crítica |
 | 4 | get_element_info | Info | ✅ Concluído e testado (12/08) | 🔴 Crítica |
 | 5 | select_by_category | Seleção | ✅ Concluído (12/08) | 🔴 Crítica |
-| 6 | select_by_type | Seleção | ⏳ Em fila | 🟡 Alta |
+| 6 | select_by_type | Seleção | ✅ Concluído (13/08) | 🔴 Crítica |
 
 ### 🟡 Secundárias (usam as primárias)
 
@@ -162,9 +162,10 @@ Se ferramenta falhar testes:
 
 ## 🚀 Início Imediato
 
-**Próxima ferramenta a implementar:** `select_by_type`
-**Prioridade:** 🟡 Alta (última primária que falta para fechar a camada 🟢)
+**Próxima ferramenta a implementar:** `scale_element`
+**Prioridade:** 🟡 Alta (primeira ferramenta da camada Secundária)
 **Tempo estimado:** 1.5h
+**Obs:** Camada Primária concluída em 13/08/2026!
 
 **Concluído em 12/08:**
 - `select_by_category` — `Commands/SelectionCommands.cs` (implementado, pronto para teste no Windows)
@@ -195,6 +196,6 @@ Não tem dependências externas (compila só com o SDK do .NET 8).
 
 ---
 
-**Status:** 🟢 Camada primária 5/6 (83.3%) — falta apenas select_by_type
-**Última atualização:** 12/08/2026 (select_by_category implementado)
-**Próxima revisão:** 13/08/2026 (select_by_type)
+**Status:** 🟢 Camada primária 6/6 (100%) — ✅ COMPLETA!
+**Última atualização:** 13/08/2026 (select_by_type implementado)
+**Próxima fase:** Camada Secundária (9 ferramentas de transformação, parâmetros e seleção avançada)

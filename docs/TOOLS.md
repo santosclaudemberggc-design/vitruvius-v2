@@ -1,10 +1,11 @@
 # Ferramentas Implementadas — VITRUVIUS V2
 
 ## Status Geral
-- **Ferramentas Implementadas:** 7/30 (23.3%) — load_family, rotate_element, move_element, get_element_info, get_parameter, set_parameter, select_by_category
+- **Ferramentas Implementadas:** 8/30 (26.7%) — load_family, rotate_element, move_element, get_element_info, get_parameter, set_parameter, select_by_category, select_by_type
 - **Infraestrutura testada (fora das 30):** get_selection
-- **Última Atualização:** 12/08/2026
-- **Próxima Ferramenta:** select_by_type (estratégia de camadas no ROADMAP.md — primárias antes de secundárias/terciárias)
+- **Última Atualização:** 13/08/2026
+- **Camada Primária:** ✅ Completa (6/6) — todas as ferramentas base implementadas
+- **Próxima:** Camada Secundária (scale_element, mirror_element, batch_set_parameters, etc.)
 
 > **Correções de infra durante o teste de 11/08:** ao validar as ferramentas
 > no Revit, foram encontrados e corrigidos 3 bugs no `HttpBridge.cs` que
@@ -358,15 +359,64 @@ Invoke-WebRequest -Uri "http://localhost:48884/" -Method Post -Body $body -Conte
 
 ---
 
+### 8. select_by_type
+
+**Descrição:** Retorna todos os elementos que usam um tipo (Family Type) específico do Revit
+
+**Parâmetros:**
+- `type_name` (string): Nome do tipo de elemento (ex: "Parede - 150mm", "Porta Dupla 1.0x2.1m", "Coluna C1")
+
+**Retorno:**
+```json
+{
+  "ok": true,
+  "result": {
+    "type_name": "Porta Dupla 1.0x2.1m",
+    "count": 3,
+    "elements": [
+      {
+        "element_id": 123456,
+        "name": "Porta 001",
+        "category": "Portas",
+        "type_name": "Porta Dupla 1.0x2.1m",
+        "element_type": "FamilyInstance"
+      },
+      {
+        "element_id": 123457,
+        "name": "Porta 002",
+        "category": "Portas",
+        "type_name": "Porta Dupla 1.0x2.1m",
+        "element_type": "FamilyInstance"
+      }
+    ],
+    "status": "sucesso"
+  }
+}
+```
+
+**Status:** ✅ Implementado (aguardando build no Windows)  
+**Data:** 13/08/2026  
+**Prioridade:** 🔴 Crítica (primária — completa a camada 🟢)
+
+**Teste HTTP:**
+```powershell
+.\tests\http-tests\09-select_by_type.ps1 "Parede - 150mm"
+.\tests\http-tests\09-select_by_type.ps1 "Porta Dupla 1.0x2.1m"
+.\tests\http-tests\09-select_by_type.ps1 "Coluna C1"
+```
+
+---
+
 ## ⏳ Próximas Ferramentas (Fila)
 
 > A partir de 11/08, a ordem segue a estratégia de camadas do ROADMAP.md
 > (primárias → secundárias → terciárias), não mais a data original.
 
-### select_by_type *(próxima — última primária)*
+### scale_element *(próxima — primeira secundária)*
 - **Prioridade:** 🟡 Alta
-- **Descrição:** Retorna todos os elementos de um tipo específico (ex: todas as instâncias da família "Porta Dupla")
-- **Data Estimada:** 13-14/08/2026
+- **Descrição:** Escala um elemento Revit (aumenta/diminui tamanho)
+- **Data Estimada:** 14-15/08/2026
+- **Depende de:** get_selection (uso manual de ID)
 
 ### 4. scale_element
 - **Prioridade:** 🟡 Alta
@@ -398,7 +448,7 @@ Invoke-WebRequest -Uri "http://localhost:48884/" -Method Post -Body $body -Conte
 | 14 | create_window | Criação | 🟡 Alta | ⏳ |
 | 15 | create_floor | Criação | 🟡 Alta | ⏳ |
 | 16 | create_roof | Criação | 🟡 Alta | ⏳ |
-| 17 | select_by_type | Seleção | 🟡 Alta | ⏳ |
+| 17 | select_by_type | Seleção | 🔴 Crítica | ✅ |
 | 18 | select_by_category | Seleção | 🔴 Crítica | ✅ |
 | 19 | select_by_parameter | Seleção | 🟡 Alta | ⏳ |
 | 20 | get_element_info | Info | 🔴 Crítica | ✅ |

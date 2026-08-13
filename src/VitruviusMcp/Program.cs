@@ -278,5 +278,20 @@ object[] BuildToolDefs() => new object[]
             },
             required = new[] { "category_name" }
         }
+    },
+    new
+    {
+        name = "select_by_type",
+        description = "Retorna todos os elementos que usam um tipo específico (Family Type) do Revit. " +
+                      "Ex: 'Parede - 150mm', 'Porta Dupla 1.0x2.1m', 'Coluna C1'.",
+        inputSchema = new
+        {
+            type = "object",
+            properties = new
+            {
+                type_name = new { type = "string", description = "Nome do tipo de elemento (ex: 'Parede - 150mm', 'Porta Dupla 1.0x2.1m')" }
+            },
+            required = new[] { "type_name" }
+        }
     }
 };

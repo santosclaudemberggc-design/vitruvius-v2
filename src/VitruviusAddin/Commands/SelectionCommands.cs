@@ -91,6 +91,57 @@ public static class SelectionCommands
         }
     }
 
+    public static string SelectByType(Document doc, JsonElement args)
+    {
+        if (doc == null)
+            return Err("Nenhum documento ativo no Revit");
+
+        try
+        {
+            if (!args.TryGetProperty("type_name", out var typeNameEl) || typeNameEl.ValueKind == JsonValueKind.Null)
+                return Err("Parâmetro 'type_name' obrigatório");
+
+            var typeName = typeNameEl.GetString();
+            if (string.IsNullOrWhiteSpace(typeName))
+                return Err("'type_name' não pode estar vazio");
+
+            // Buscar o tipo (ElementType) por nome
+            var elementType = new FilteredElementCollector(doc)
+                .OfClass(typeof(ElementType))
+                .Cast<ElementType>()
+                .FirstOrDefault(t => t.Name.Equals(typeName, StringComparison.OrdinalIgnoreCase));
+
+            if (elementType == null)
+                return Err($"Tipo '{typeName}' não encontrado no documento");
+
+            // Buscar todos os elementos que usam esse tipo
+            var elements = new FilteredElementCollector(doc)
+                .WhereElementIsNotElementType()
+                .Where(el => el.GetTypeId() == elementType.Id)
+                .Select(el => new
+                {
+                    element_id = el.Id.Value,
+                    name = el.Name,
+                    category = el.Category?.Name ?? "Desconhecida",
+                    type_name = typeName,
+                    element_type = el.GetType().Name
+                })
+                .ToList();
+
+            return Ok(new
+            {
+                count = elements.Count,
+                type_name = typeName,
+                elements,
+                status = elements.Count == 0 ? "nenhum_resultado" : "sucesso"
+            });
+        }
+        catch (Exception ex)
+        {
+            return Err($"Erro ao selecionar por tipo: {ex.Message}");
+        }
+    }
+
     private static string Ok(object data) =>
         System.Text.Json.JsonSerializer.Serialize(new { ok = true, result = data });
 
