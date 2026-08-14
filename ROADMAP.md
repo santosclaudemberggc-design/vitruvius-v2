@@ -37,7 +37,7 @@ dela para funcionar:
 | 3 | set_parameter | Parâmetros | ✅ Concluído e testado (11/08) | 🔴 Crítica |
 | 4 | get_element_info | Info | ✅ Concluído e testado (12/08) | 🔴 Crítica |
 | 5 | select_by_category | Seleção | ✅ Concluído (12/08) | 🔴 Crítica |
-| 6 | select_by_type | Seleção | ⏳ Em fila | 🟡 Alta |
+| 6 | select_by_type | Seleção | ✅ Implementado (14/08) | 🟡 Alta |
 
 ### 🟡 Secundárias (usam as primárias)
 

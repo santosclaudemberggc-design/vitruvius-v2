@@ -91,6 +91,49 @@ public static class SelectionCommands
         }
     }
 
+    public static string SelectByType(Document doc, JsonElement args)
+    {
+        if (doc == null)
+            return Err("Nenhum documento ativo no Revit");
+
+        try
+        {
+            if (!args.TryGetProperty("type_name", out var typeNameEl) || typeNameEl.ValueKind == JsonValueKind.Null)
+                return Err("Parâmetro 'type_name' obrigatório (ex: 'Wall', 'Door', 'Floor', 'Roof')");
+
+            var typeName = typeNameEl.GetString();
+            if (string.IsNullOrWhiteSpace(typeName))
+                return Err("'type_name' não pode estar vazio");
+
+            // Buscar todos os elementos que correspondem ao tipo
+            var collector = new FilteredElementCollector(doc)
+                .WhereElementIsNotElementType();
+
+            var elements = collector
+                .Where(el => el.GetType().Name.Equals(typeName, StringComparison.OrdinalIgnoreCase))
+                .Select(el => new
+                {
+                    element_id = el.Id.Value,
+                    name = el.Name,
+                    category = el.Category?.Name ?? "Desconhecida",
+                    element_type = el.GetType().Name
+                })
+                .ToList();
+
+            return Ok(new
+            {
+                count = elements.Count,
+                type = typeName,
+                elements,
+                status = elements.Count == 0 ? "nenhum_resultado" : "sucesso"
+            });
+        }
+        catch (Exception ex)
+        {
+            return Err($"Erro ao selecionar por tipo: {ex.Message}");
+        }
+    }
+
     private static string Ok(object data) =>
         System.Text.Json.JsonSerializer.Serialize(new { ok = true, result = data });
 

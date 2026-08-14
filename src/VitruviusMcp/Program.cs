@@ -278,5 +278,20 @@ object[] BuildToolDefs() => new object[]
             },
             required = new[] { "category_name" }
         }
+    },
+    new
+    {
+        name = "select_by_type",
+        description = "Retorna todos os elementos de um tipo específico no Revit (ex: 'Wall', 'Door', 'Floor', 'Roof', 'FamilyInstance'). " +
+                      "Use isto quando precisar de todos os elementos de uma classe específica.",
+        inputSchema = new
+        {
+            type = "object",
+            properties = new
+            {
+                type_name = new { type = "string", description = "Nome do tipo (ex: 'Wall', 'Door', 'Floor', 'Roof', 'FamilyInstance')" }
+            },
+            required = new[] { "type_name" }
+        }
     }
 };
